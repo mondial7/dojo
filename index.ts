@@ -1,3 +1,3 @@
-export const doNothing = (beingPolite) => {
-  return !beingPolite;
+export const ticTacToe = (x, y) => {
+  return false;
 };
