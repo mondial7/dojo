@@ -1,16 +1,29 @@
-import unittest
-import dojo
+# https://katdef a-log.rocks/manhattan-distance-kata
+# 
+# int manhattanDistance(Point, Point)
+# 
+# Rules:
+# 
+# The class Point is immutable (its state cannot be changed after instantiation)
+# The class Point has no Getters
+# The class Point has no public properties (i.e. the internal state cannot be read from outside the class).
+# 
 
-class KataTemplateTests(unittest.TestCase):
-    
-    def test_do_nothing_does_not_do_anything(self):
-        kata = dojo.KataTemplate()
-        self.assertFalse(kata.doNothing(""))
-
-    def test_do_nothing_is_polite(self):
-        kata = dojo.KataTemplate()
-        self.assertTrue(kata.doNothing("please"))
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
 
-if __name__ == "__main__":
-    unittest.main()
+def manhattanDistance(pointA: Point, pointB: Point) -> int:
+    return 0
+
+
+def test_starting_point_to_itself():
+    startingPoint: Point = Point(1, 1)
+    assert manhattanDistance(startingPoint, startingPoint) == 0
+
+def test_starting_point_to_point_b():
+    startingPoint: Point = Point(1, 1)
+    pointB: Point=Point(1,2)
+    assert manhattanDistance(startingPoint, startingPoint) == 0
