@@ -1,11 +1,9 @@
-import { doNothing } from ".";
+import { GildedRose, Item } from ".";
 
-describe("Kata Template", () => {
-  it("does nothing...", () => {
-    expect(doNothing("")).toBeTruthy();
-  });
-
-  it("replies to politeness", () => {
-    expect(doNothing("please")).toBeFalsy();
+describe('Gilded Rose', () => {
+  it('should foo', () => {
+    const gildedRose = new GildedRose([new Item('foo', 0, 0)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].name).toBe('fixme');
   });
 });
