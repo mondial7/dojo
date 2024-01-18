@@ -1,48 +1,40 @@
 export class GameScore {
   public static calculate(cards: [Card, Card, Card]): number {
-    // Determine if more than 1 card of the same suit
+    let highestScore = 0;
     const scorePerSuits = {
       [Suits.Spades]: 0,
       [Suits.Clovers]: 0,
       [Suits.Hearts]: 0,
       [Suits.Diamonds]: 0,
-    }
+    };
     for (const card of cards) {
-      const currentSuit = card.getSuit()
-      scorePerSuits[currentSuit] += 1
-    }
-    const suitWithMoreThanOneCard = Object.entries(scorePerSuits).find(([suit, score]) => score > 1)
-
-    // if more than one of same suit, do ...
-    
-    // if all cards are of diffent suits do:
-    let highestCard = 0;
-
-    for (const card of cards) {
-      if (card.getValue() > highestCard){
-        highestCard = card.getValue();
+      const currentSuit = card.getSuit();
+      const currentValue = card.getValue();
+      scorePerSuits[currentSuit] += currentValue;
+      if (scorePerSuits[currentSuit] > highestScore) {
+        highestScore = scorePerSuits[currentSuit];
       }
     }
 
-    return highestCard;
+    return highestScore;
   }
 }
 
 export class Card {
-  private readonly suit: Suits
-  private readonly value: CardValues
+  private readonly suit: Suits;
+  private readonly value: CardValues;
 
   constructor(suit: Suits, value: CardValues) {
-    this.suit = suit
-    this.value = value
+    this.suit = suit;
+    this.value = value;
   }
 
   getSuit(): Suits {
-    return this.suit
+    return this.suit;
   }
 
   getValue(): CardValues {
-    return this.value
+    return this.value;
   }
 }
 
@@ -50,7 +42,7 @@ export enum Suits {
   Spades,
   Clovers,
   Hearts,
-  Diamonds
+  Diamonds,
 }
 
 export enum CardValues {
