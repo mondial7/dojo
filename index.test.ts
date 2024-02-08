@@ -18,7 +18,7 @@
  * 
  */
 
-import { GameScore, Card, CardValues, Suits } from "."
+import { GameScore, Card, CardValues, Suits, Player } from "."
 
 describe('GameScore', () => {
   describe("calculate", () => {
@@ -67,8 +67,30 @@ describe('GameScore', () => {
       })
     })
 
-        
+    it.todo("enforce that excately 3 cards are passed in")
+    it.todo("enfore that the cards are not duplicated")
+  })
+
+  describe("calculateRoundLooser", () => {
+    it("should return the player with the lowest hand score", () => {
+      const playerA : Player = {
+        name: "Player A",
+        handScore: 9
+      }
+      const playerB : Player = {
+        name: "Player B",
+        handScore: 11
+      }
+      const playerC : Player = {
+        name: "Player C",
+        handScore: 11
+      }
+
+      const looser = GameScore.calculateRoundLooser([playerA, playerB, playerC])
+
+      expect(looser).toBe(playerA)
+    })
   })
   
-
+  it.todo("game should recognise round winner with 31")
 })

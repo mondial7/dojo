@@ -18,6 +18,15 @@ export class GameScore {
 
     return highestScore;
   }
+
+  public static calculateRoundLooser(players: Player[]): Player {
+    return players[0]
+  }
+}
+
+export interface Player {
+  name: string;
+  handScore: number;
 }
 
 export class Card {
