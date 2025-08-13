@@ -127,12 +127,12 @@ export class PseudocodeInterpreter {
   private executeStatement(statement: PseudocodeStatement): PseudocodeValue {
     switch (statement.type) {
       case 'assignment':
-        const value = this.evaluateExpression(statement.value)
-        this.context.variables.set(statement.variable, value)
+        const value = this.evaluateExpression(statement.value as string)
+        this.context.variables.set(statement.variable as string, value)
         return value
         
       case 'return':
-        return this.evaluateExpression(statement.value)
+        return this.evaluateExpression(statement.value as string)
         
       default:
         return null
