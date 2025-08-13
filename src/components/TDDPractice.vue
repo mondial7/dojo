@@ -1,10 +1,15 @@
 <template>
   <div class="tdd-practice">
     <header class="practice-header">
-      <h1>TDD Dojo</h1>
-      <div class="status-indicator" :style="{ backgroundColor: tddStore.statusColor }">
-        <span class="status-dot"></span>
-        {{ tddStore.statusMessage }}
+      <div class="header-left">
+        <h1>TDD Dojo</h1>
+        <div class="status-indicator" :style="{ backgroundColor: tddStore.statusColor }">
+          <span class="status-dot"></span>
+          {{ tddStore.statusMessage }}
+        </div>
+      </div>
+      <div class="header-right">
+        <ThemeToggle />
       </div>
     </header>
 
@@ -82,6 +87,7 @@ import CodeEditor from './CodeEditor.vue'
 import TestResults from './TestResults.vue'
 import WorkflowGuide from './WorkflowGuide.vue'
 import ExerciseSelector from './ExerciseSelector.vue'
+import ThemeToggle from './ThemeToggle.vue'
 import type { Exercise } from '@/data/exercises'
 
 const tddStore = useTDDStore()
@@ -130,10 +136,10 @@ END`
 
 <style scoped>
 .tdd-practice {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
 }
 
 .practice-header {
@@ -141,14 +147,26 @@ END`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #e5e7eb;
+  padding: 20px 0;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
 }
 
 .practice-header h1 {
-  color: #1f2937;
+  color: var(--color-heading);
   font-size: 2.5rem;
   margin: 0;
+  font-weight: 700;
 }
 
 .status-indicator {
@@ -178,86 +196,118 @@ END`
 .practice-content {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 25px;
 }
 
 .editor-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 25px;
+  min-height: 400px;
 }
 
 .editor-panel {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--color-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--color-border);
   overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.editor-panel:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .editor-panel h3 {
   margin: 0;
-  padding: 15px 20px;
-  background: #f9fafb;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 18px 24px;
+  background: var(--color-background-mute);
+  color: var(--color-heading);
+  border-bottom: 1px solid var(--color-border);
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .controls {
   display: flex;
   gap: 15px;
   justify-content: center;
-  margin: 20px 0;
+  margin: 25px 0;
+  flex-wrap: wrap;
 }
 
 .controls button {
   padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
+  border: 2px solid transparent;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .run-button {
-  background: #3b82f6;
+  background: var(--color-primary);
   color: white;
+  border-color: var(--color-primary);
 }
 
 .run-button:hover:not(:disabled) {
-  background: #2563eb;
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .run-button:disabled {
-  background: #9ca3af;
+  background: var(--color-text-soft);
+  border-color: var(--color-text-soft);
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .reset-button {
-  background: #6b7280;
+  background: var(--color-text-soft);
   color: white;
+  border-color: var(--color-text-soft);
 }
 
 .reset-button:hover {
-  background: #4b5563;
+  background: var(--color-text);
+  border-color: var(--color-text);
+  transform: translateY(-1px);
 }
 
 .refactor-button {
-  background: #f59e0b;
+  background: var(--color-warning);
   color: white;
+  border-color: var(--color-warning);
 }
 
 .refactor-button:hover {
-  background: #d97706;
+  background: var(--color-warning-hover);
+  border-color: var(--color-warning-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
 .complete-refactor-button {
-  background: #10b981;
+  background: var(--color-success);
   color: white;
+  border-color: var(--color-success);
 }
 
 .complete-refactor-button:hover {
-  background: #059669;
+  background: var(--color-success-hover);
+  border-color: var(--color-success-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
 .results-section {
@@ -265,34 +315,88 @@ END`
 }
 
 .workflow-guide {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 300px;
-  z-index: 1000;
+  grid-column: 1 / -1;
 }
 
-@media (max-width: 1200px) {
+@media (min-width: 1400px) {
+  .practice-content {
+    grid-template-columns: 1fr 320px;
+    grid-template-rows: auto 1fr auto;
+    gap: 30px;
+  }
+  
+  .editor-section {
+    grid-column: 1;
+    grid-row: 1 / -1;
+  }
+  
+  .controls {
+    grid-column: 1;
+  }
+  
+  .results-section {
+    grid-column: 1;
+  }
+  
   .workflow-guide {
-    position: static;
-    width: 100%;
-    margin-top: 20px;
+    grid-column: 2;
+    grid-row: 1 / -1;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+  }
+}
+
+@media (max-width: 1024px) {
+  .tdd-practice {
+    padding: 15px;
+  }
+  
+  .practice-header h1 {
+    font-size: 2rem;
+  }
+  
+  .header-left {
+    gap: 20px;
   }
 }
 
 @media (max-width: 768px) {
+  .tdd-practice {
+    padding: 10px;
+  }
+  
   .editor-section {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   
   .practice-header {
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
+    padding: 15px 0;
+  }
+  
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .practice-header h1 {
+    font-size: 1.8rem;
   }
   
   .controls {
     flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .controls button {
+    flex: 1;
+    min-width: 120px;
   }
 }
 </style>
