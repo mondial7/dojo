@@ -15,14 +15,14 @@ export class PseudocodeInterpreter {
     const functions: PseudocodeFunction[] = []
     let currentFunction: PseudocodeFunction | null = null
     let currentBody: PseudocodeStatement[] = []
-    
+
     for (const line of lines) {
       if (line.startsWith('FUNCTION ')) {
         if (currentFunction) {
           currentFunction.body = currentBody
           functions.push(currentFunction)
         }
-        
+
         const match = line.match(/FUNCTION\s+(\w+)\s*\(([^)]*)\)/)
         if (match) {
           const name = match[1]
@@ -44,12 +44,12 @@ export class PseudocodeInterpreter {
         }
       }
     }
-    
+
     if (currentFunction) {
       currentFunction.body = currentBody
       functions.push(currentFunction)
     }
-    
+
     return functions
   }
 
@@ -65,7 +65,7 @@ export class PseudocodeInterpreter {
         }
       }
     }
-    
+
     // RETURN value
     if (line.startsWith('RETURN ')) {
       const value = line.substring(7).trim()
@@ -74,7 +74,7 @@ export class PseudocodeInterpreter {
         value
       }
     }
-    
+
     // IF condition THEN
     if (line.startsWith('IF ')) {
       const match = line.match(/IF\s+(.+)\s+THEN/)
@@ -87,7 +87,7 @@ export class PseudocodeInterpreter {
         }
       }
     }
-    
+
     return null
   }
 
@@ -96,15 +96,15 @@ export class PseudocodeInterpreter {
     if (!func) {
       throw new Error(`Function '${functionName}' not found`)
     }
-    
+
     // Create new scope for function execution
     const oldVariables = new Map(this.context.variables)
-    
+
     // Bind parameters
     func.parameters.forEach((param, index) => {
       this.context.variables.set(param, args[index] || null)
     })
-    
+
     try {
       const result = this.executeStatements(func.body)
       return result
@@ -130,10 +130,10 @@ export class PseudocodeInterpreter {
         const value = this.evaluateExpression(statement.value as string)
         this.context.variables.set(statement.variable as string, value)
         return value
-        
+
       case 'return':
         return this.evaluateExpression(statement.value as string)
-        
+
       default:
         return null
     }
@@ -141,27 +141,27 @@ export class PseudocodeInterpreter {
 
   private evaluateExpression(expr: string): PseudocodeValue {
     expr = expr.trim()
-    
+
     // Number literal
     if (/^-?\d+(\.\d+)?$/.test(expr)) {
       return parseFloat(expr)
     }
-    
+
     // String literal
     if ((expr.startsWith('"') && expr.endsWith('"')) || (expr.startsWith("'") && expr.endsWith("'"))) {
       return expr.slice(1, -1)
     }
-    
+
     // Boolean literal
     if (expr === 'true') return true
     if (expr === 'false') return false
     if (expr === 'null') return null
-    
+
     // Variable
     if (/^\w+$/.test(expr)) {
       return this.context.variables.get(expr) || null
     }
-    
+
     // Simple arithmetic operations
     if (expr.includes(' + ')) {
       const [left, right] = expr.split(' + ', 2)
@@ -171,7 +171,7 @@ export class PseudocodeInterpreter {
         return leftVal + rightVal
       }
     }
-    
+
     if (expr.includes(' - ')) {
       const [left, right] = expr.split(' - ', 2)
       const leftVal = this.evaluateExpression(left)
@@ -180,7 +180,7 @@ export class PseudocodeInterpreter {
         return leftVal - rightVal
       }
     }
-    
+
     if (expr.includes(' * ')) {
       const [left, right] = expr.split(' * ', 2)
       const leftVal = this.evaluateExpression(left)
@@ -189,7 +189,7 @@ export class PseudocodeInterpreter {
         return leftVal * rightVal
       }
     }
-    
+
     if (expr.includes(' / ')) {
       const [left, right] = expr.split(' / ', 2)
       const leftVal = this.evaluateExpression(left)
@@ -198,7 +198,7 @@ export class PseudocodeInterpreter {
         return leftVal / rightVal
       }
     }
-    
+
     if (expr.includes(' % ')) {
       const [left, right] = expr.split(' % ', 2)
       const leftVal = this.evaluateExpression(left)
@@ -207,13 +207,13 @@ export class PseudocodeInterpreter {
         return leftVal % rightVal
       }
     }
-    
+
     // Comparison operations
     if (expr.includes(' == ')) {
       const [left, right] = expr.split(' == ', 2)
       return this.evaluateExpression(left) === this.evaluateExpression(right)
     }
-    
+
     return null
   }
 
