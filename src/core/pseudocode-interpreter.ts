@@ -1,4 +1,9 @@
-import type { PseudocodeValue, PseudocodeFunction, PseudocodeStatement, PseudocodeContext } from './pseudocode-language'
+import type {
+  PseudocodeContext,
+  PseudocodeFunction,
+  PseudocodeStatement,
+  PseudocodeValue,
+} from './pseudocode-language'
 
 export class PseudocodeInterpreter {
   private context: PseudocodeContext
@@ -6,12 +11,15 @@ export class PseudocodeInterpreter {
   constructor() {
     this.context = {
       variables: new Map(),
-      functions: new Map()
+      functions: new Map(),
     }
   }
 
   parse(code: string): PseudocodeFunction[] {
-    const lines = code.split('\n').map(line => line.trim()).filter(line => line && !line.startsWith('//'))
+    const lines = code
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith('//'))
     const functions: PseudocodeFunction[] = []
     let currentFunction: PseudocodeFunction | null = null
     let currentBody: PseudocodeStatement[] = []
@@ -26,7 +34,7 @@ export class PseudocodeInterpreter {
         const match = line.match(/FUNCTION\s+(\w+)\s*\(([^)]*)\)/)
         if (match) {
           const name = match[1]
-          const params = match[2] ? match[2].split(',').map(p => p.trim()) : []
+          const params = match[2] ? match[2].split(',').map((p) => p.trim()) : []
           currentFunction = { name, parameters: params, body: [] }
           currentBody = []
         }
@@ -61,7 +69,7 @@ export class PseudocodeInterpreter {
         return {
           type: 'assignment',
           variable: match[1],
-          value: match[2]
+          value: match[2],
         }
       }
     }
@@ -71,7 +79,7 @@ export class PseudocodeInterpreter {
       const value = line.substring(7).trim()
       return {
         type: 'return',
-        value
+        value,
       }
     }
 
@@ -83,7 +91,7 @@ export class PseudocodeInterpreter {
           type: 'if',
           condition: match[1],
           thenBlock: [],
-          elseBlock: []
+          elseBlock: [],
         }
       }
     }
@@ -106,8 +114,7 @@ export class PseudocodeInterpreter {
     })
 
     try {
-      const result = this.executeStatements(func.body)
-      return result
+      return this.executeStatements(func.body)
     } finally {
       // Restore previous scope
       this.context.variables = oldVariables
@@ -148,7 +155,10 @@ export class PseudocodeInterpreter {
     }
 
     // String literal
-    if ((expr.startsWith('"') && expr.endsWith('"')) || (expr.startsWith("'") && expr.endsWith("'"))) {
+    if (
+      (expr.startsWith('"') && expr.endsWith('"')) ||
+      (expr.startsWith("'") && expr.endsWith("'"))
+    ) {
       return expr.slice(1, -1)
     }
 
@@ -159,7 +169,8 @@ export class PseudocodeInterpreter {
 
     // Variable
     if (/^\w+$/.test(expr)) {
-      return this.context.variables.get(expr) || null
+      const v = this.context.variables.get(expr) || null
+      return v
     }
 
     // Simple arithmetic operations
@@ -167,8 +178,10 @@ export class PseudocodeInterpreter {
       const [left, right] = expr.split(' + ', 2)
       const leftVal = this.evaluateExpression(left)
       const rightVal = this.evaluateExpression(right)
-      if (typeof leftVal === 'number' && typeof rightVal === 'number') {
-        return leftVal + rightVal
+      const leftNum = leftVal === null ? 0 : leftVal
+      const rightNum = rightVal === null ? 0 : rightVal
+      if (typeof leftNum === 'number' && typeof rightNum === 'number') {
+        return leftNum + rightNum
       }
     }
 
@@ -176,8 +189,10 @@ export class PseudocodeInterpreter {
       const [left, right] = expr.split(' - ', 2)
       const leftVal = this.evaluateExpression(left)
       const rightVal = this.evaluateExpression(right)
-      if (typeof leftVal === 'number' && typeof rightVal === 'number') {
-        return leftVal - rightVal
+      const leftNum = leftVal === null ? 0 : leftVal
+      const rightNum = rightVal === null ? 0 : rightVal
+      if (typeof leftNum === 'number' && typeof rightNum === 'number') {
+        return leftNum - rightNum
       }
     }
 
@@ -185,8 +200,10 @@ export class PseudocodeInterpreter {
       const [left, right] = expr.split(' * ', 2)
       const leftVal = this.evaluateExpression(left)
       const rightVal = this.evaluateExpression(right)
-      if (typeof leftVal === 'number' && typeof rightVal === 'number') {
-        return leftVal * rightVal
+      const leftNum = leftVal === null ? 0 : leftVal
+      const rightNum = rightVal === null ? 0 : rightVal
+      if (typeof leftNum === 'number' && typeof rightNum === 'number') {
+        return leftNum * rightNum
       }
     }
 
@@ -194,8 +211,10 @@ export class PseudocodeInterpreter {
       const [left, right] = expr.split(' / ', 2)
       const leftVal = this.evaluateExpression(left)
       const rightVal = this.evaluateExpression(right)
-      if (typeof leftVal === 'number' && typeof rightVal === 'number') {
-        return leftVal / rightVal
+      const leftNum = leftVal === null ? 0 : leftVal
+      const rightNum = rightVal === null ? 0 : rightVal
+      if (typeof leftNum === 'number' && typeof rightNum === 'number') {
+        return leftNum / rightNum
       }
     }
 
@@ -203,8 +222,10 @@ export class PseudocodeInterpreter {
       const [left, right] = expr.split(' % ', 2)
       const leftVal = this.evaluateExpression(left)
       const rightVal = this.evaluateExpression(right)
-      if (typeof leftVal === 'number' && typeof rightVal === 'number') {
-        return leftVal % rightVal
+      const leftNum = leftVal === null ? 0 : leftVal
+      const rightNum = rightVal === null ? 0 : rightVal
+      if (typeof leftNum === 'number' && typeof rightNum === 'number') {
+        return leftNum % rightNum
       }
     }
 
@@ -219,7 +240,7 @@ export class PseudocodeInterpreter {
 
   loadCode(code: string): void {
     const functions = this.parse(code)
-    functions.forEach(func => {
+    functions.forEach((func) => {
       this.context.functions.set(func.name, func)
     })
   }
