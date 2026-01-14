@@ -1,45 +1,53 @@
-# tdd-dojo
+# TDD Kata Dojo - Swift
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple Swift project for practicing Test-Driven Development (TDD) with kata exercises.
 
-## Recommended IDE Setup
+## Prerequisites
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Swift 6.0 or later (check with `swift --version`)
+- Xcode Command Line Tools (comes with Xcode or install with `xcode-select --install`)
 
-## Type Support for `.vue` Imports in TS
+## Quick Start
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+### Run Tests
+```bash
+swift test
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+### Run Tests with Verbose Output
+```bash
+swift test --verbose
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
+### Build the Project
+```bash
+swift build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
+### Open in Xcode (Optional)
+```bash
+open Package.swift
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Project Structure
 
-```sh
-npm run lint
-```
+- `Sources/TDDKata/` - Your implementation code goes here
+- `Tests/TDDKataTests/` - Your test code goes here
+- `Package.swift` - Project configuration
+
+## TDD Workflow
+
+1. Write a failing test in `Tests/TDDKataTests/`
+2. Run `swift test` to see it fail (Red)
+3. Write minimal code in `Sources/TDDKata/` to make it pass
+4. Run `swift test` to see it pass (Green)
+5. Refactor and repeat
+
+## Tips
+
+- Test files must end with `Tests.swift`
+- Test methods must start with `test`
+- Use `XCTAssertEqual`, `XCTAssertTrue`, etc. for assertions
+- Run `swift test --help` for more options
+
+Happy coding!
